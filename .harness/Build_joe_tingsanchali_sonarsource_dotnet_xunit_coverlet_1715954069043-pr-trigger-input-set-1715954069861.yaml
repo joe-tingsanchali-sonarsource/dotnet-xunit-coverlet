@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_joe_tingsanchali_sonarsource_dotnet_xunit_coverlet_1715954069043-pr-trigger-input-set
+  identifier: Build_joe_tingsanchali_sonarsource_dotnet_xunit_coverlet_1715954069043prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_joe_tingsanchali_sonarsource_dotnet_xunit_coverlet_1715954069043
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
