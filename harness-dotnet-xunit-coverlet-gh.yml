@@ -1,0 +1,74 @@
+pipeline:
+  identifier: default
+  name: default
+  orgIdentifier: default
+  projectIdentifier: default
+  properties:
+    ci:
+      codebase:
+        build: <+input>
+  stages:
+  - stage:
+      identifier: build
+      name: build
+      spec:
+        cloneCodebase: true
+        execution:
+          steps:
+          - step:
+              identifier: setupjdk11
+              name: Set up JDK 11
+              spec:
+                uses: actions/setup-java@v1
+                with:
+                  java-version: "1.11"
+              timeout: ""
+              type: Action
+          - step:
+              identifier: cachesonarqubepackages
+              name: Cache SonarQube packages
+              spec:
+                uses: actions/cache@v1
+                with:
+                  key: ${{ runner.os }}-sonar
+                  path: ~\sonar\cache
+                  restore-keys: ${{ runner.os }}-sonar
+              timeout: ""
+              type: Action
+          - step:
+              identifier: cachesonarqubescanner
+              name: Cache SonarQube scanner
+              spec:
+                uses: actions/cache@v1
+                with:
+                  key: ${{ runner.os }}-sonar-scanner
+                  path: .\.sonar\scanner
+                  restore-keys: ${{ runner.os }}-sonar-scanner
+              timeout: ""
+              type: Action
+          - step:
+              identifier: installsonarqubescanner
+              name: Install SonarQube scanner
+              spec:
+                command: |
+                  New-Item -Path .\.sonar\scanner -ItemType Directory
+                  dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+              timeout: ""
+              type: Run
+          - step:
+              identifier: buildandanalyze
+              name: Build and analyze
+              spec:
+                command: |
+                  .\.sonar\scanner\dotnet-sonarscanner begin /k:"dotnet-xunit-coverlet" /d:"sonar.login=${{ secrets.SONAR_TOKEN }}" /d:"sonar.host.url=${{ secrets.SONAR_HOST_URL }}"
+                  dotnet build
+                  .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+              timeout: ""
+              type: Run
+        platform:
+          arch: Amd64
+          os: Windows
+        runtime:
+          spec: {}
+          type: Cloud
+      type: CI
