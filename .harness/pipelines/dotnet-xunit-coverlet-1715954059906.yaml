@@ -1,0 +1,35 @@
+pipeline:
+  identifier: Build_joe_tingsanchali_sonarsource_dotnet_xunit_coverlet_1715954069043
+  name: Build dotnet-xunit-coverlet
+  orgIdentifier: default
+  projectIdentifier: default_project
+  properties:
+    ci:
+      codebase:
+        build: <+input>
+        connectorRef: account.Github
+        repoName: joe-tingsanchali-sonarsource/dotnet-xunit-coverlet
+  stages:
+    - stage:
+        identifier: build
+        name: build
+        spec:
+          caching:
+            enabled: true
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  identifier: echo
+                  name: echo
+                  spec:
+                    command: echo hello world
+                  timeout: ""
+                  type: Run
+          platform:
+            arch: Amd64
+            os: Linux
+          runtime:
+            spec: {}
+            type: Cloud
+        type: CI
