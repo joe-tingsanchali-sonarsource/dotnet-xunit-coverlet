@@ -47,7 +47,7 @@ jobs:
           dotnet build
           dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
       - name: Convert coverage report using ReportGenerator
-        uses: danielpalme/ReportGenerator-GitHub-Action@v5
+        uses: danielpalme/ReportGenerator-GitHub-Action@v5.1.9
         with:
           reports: '*/coverage.cobertura.xml'
           targetdir: '.'
