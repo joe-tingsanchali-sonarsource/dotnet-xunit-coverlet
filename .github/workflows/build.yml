@@ -44,11 +44,9 @@ jobs:
       - name: Build and analyze
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"joe-tingsanchali-sonarsource_dotnet-xunit-coverlet_ad491031-1e8b-4084-b0e2-e98c68f14c7b" \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
-            /d:"sonar.coverageReportPaths=SonarQube.xml"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"joe-tingsanchali-sonarsource_dotnet-xunit-coverlet_ad491031-1e8b-4084-b0e2-e98c68f14c7b" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:"sonar.coverageReportPaths=SonarQube.xml"
           dotnet build
           dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
           reportgenerator -reports:'*/coverage.cobertura.xml' -targetdir:'.' -reporttypes:'SonarQube'
+
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
